@@ -1,6 +1,6 @@
 import { flow } from 'fp-ts/function'
 import { filter, map, some } from 'fp-ts/ReadonlyArray'
-import { cond, forEach } from 'ramda'
+import { cond } from 'ramda'
 import { isTodoCommand, isWaitCommand, takeCommandStrings, toCommands, TodoCommand, WaitCommand } from './commands'
 import { format } from 'date-fns'
 import { prependFileSync, readFileLines } from './fs'
@@ -8,7 +8,10 @@ import { appendFileSync } from 'fs'
 import { WAITING_FILE_PATH } from './constants'
 import * as childProcess from 'child_process'
 import { startsWith } from 'fp-ts/string'
+import * as O from 'fp-ts/Option'
 
+
+const log = (s: string) => () => { console.log(s) }
 
 const appendWait = flow(
    ({command}: WaitCommand) => `- [${ format(new Date(), 'yyyy-MM-dd') }] ${ command }\n`,
@@ -16,14 +19,13 @@ const appendWait = flow(
 )
 
 const sendToTaskWarrior = (todo: TodoCommand): void => {
-   childProcess.execSync('task ' + todo.command)
+   childProcess.execSync('task add ' + todo.command)
 }
-
 
 const handleCommands = flow(
    filter(takeCommandStrings),
    map(toCommands),
-   forEach(cond([
+   map(cond([
       [ isTodoCommand, sendToTaskWarrior ],
       [ isWaitCommand, appendWait ],
    ])),
@@ -31,15 +33,14 @@ const handleCommands = flow(
 
 const isAlreadyParsed = some(startsWith('@parsed_at'))
 
-const parseCommandFile = (fileName: string): void => {
-   const content = readFileLines(fileName)
-
-   if (isAlreadyParsed(content)) {
-      console.log('File already parses, nothing to do')
-      return
-   }
-   handleCommands(content)
-}
+const parseCommandFile = flow(
+   readFileLines,
+   O.fromPredicate(isAlreadyParsed),
+   O.fold(
+      log('File already parsed, nothing to do'),
+      handleCommands,
+   ),
+)
 
 
 const markFileAsParsed = prependFileSync(`@parsed_at:${ format(new Date(), 'yyyy-MM-dd') }\n`)
@@ -49,4 +50,5 @@ const main = (fileName: string): void => {
    markFileAsParsed(fileName)
 }
 
-main('test.txt')
+
+main(process.argv[2])

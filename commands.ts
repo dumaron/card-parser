@@ -24,7 +24,7 @@ export const isTodoString = startsWith('+TODO')
 export const isWaitString = startsWith('+WAIT')
 export const takeCommandStrings = (s: string) => pipe(
    [ isTodoString, isWaitString ],
-   some(fn => fn(s)), // TODO find if I can use an Apply
+   some(fn => fn(s)),
 )
 
 export const toTodoCommand = (s: string): TodoCommand => ({
