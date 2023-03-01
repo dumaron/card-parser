@@ -1,42 +1,45 @@
-import { flow } from 'fp-ts/function'
-import * as RA from 'fp-ts/ReadonlyArray'
-import { commands, toCommands } from './commands'
-import { readFileLines } from './fs'
-import * as O from 'fp-ts/Option'
-import { log } from './misc'
-import { isAlreadyParsed, markFileAsParsed } from './card'
+import { readFile } from './fs'
+import { markFileAsParsed } from './card'
+import { TodoCommand } from './commands/commands/TodoCommand'
+import { WaitCommand } from './commands/commands/WaitCommand'
+import { Command } from './commands/Command'
 
 
-const handleCommands = flow(
-   RA.map(toCommands),
-   RA.compact,
-   RA.map(
-      command => {
-         for (const definition of commands) {
-            if (definition.is(command)) {
-               // @ts-ignore TODO learn how to fix this type
-               definition.handle(command)
-               return
-            }
-         }
+const parseCommandFile = (content: string): ReadonlyArray<Command> => {
+   const lines = content.split('\n')
+   const commands: Array<Command> = []
+
+   if (lines.some(line => line.startsWith('@parsed_at'))) {
+      console.log('Already parsed - exiting')
+      process.exit(1)
+   }
+
+   for (const line of lines) {
+
+      if (TodoCommand.stringMatches(line)) {
+         commands.push(new TodoCommand(line))
       }
-   )
-)
 
+      if (WaitCommand.stringMatches(line)) {
+         commands.push(new WaitCommand(line))
+      }
+   }
 
-const parseCommandFile = flow(
-   readFileLines,
-   O.fromPredicate(isAlreadyParsed),
-   O.fold(
-      log('File already parsed, nothing to do'),
-      handleCommands,
-   ),
-)
+   return commands
+}
 
-const main = (fileName: string): void => {
-   parseCommandFile(fileName)
-   markFileAsParsed(fileName)
+const main = (path: string): void => {
+   const fileContent = readFile(path)
+
+   const commands = parseCommandFile(fileContent)
+   commands.forEach(command => command.execute())
+   markFileAsParsed(path)
 }
 
 
-main(process.argv[2])
+if (require.main === module) {
+   const path = process.argv[2]
+   main(path)
+}
+
+export const _parseCommandFile = parseCommandFile
