@@ -6,12 +6,13 @@ export class TodoCommand extends Command {
    private readonly command: string
 
    constructor(s: string) {
-      super()
-      this.command = s.replace('+TODO ', '')
+      super(s)
+      this.command = this.cleanLine.replace('+TODO ', '')
    }
 
    execute() {
-      childProcess.execSync('task add ' + this.command)
+      const tags = this.tags.map(t => `+${t}`).join(' ')
+      childProcess.execSync(`task add ${this.command} ${tags}`)
    }
 
    static stringMatches(s: string): boolean {

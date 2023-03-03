@@ -7,8 +7,8 @@ export class WaitCommand extends Command {
    private readonly waitText: string
 
    constructor(s: string) {
-      super()
-      this.waitText = s.replace('+WAIT ', '')
+      super(s)
+      this.waitText = this.cleanLine.replace('+WAIT ', '')
    }
 
    execute() {

@@ -14,15 +14,13 @@ const parseCommandFile = (content: string): ReadonlyArray<Command> => {
       process.exit(1)
    }
 
+
    for (const line of lines) {
-
-      if (TodoCommand.stringMatches(line)) {
-         commands.push(new TodoCommand(line))
-      }
-
-      if (WaitCommand.stringMatches(line)) {
-         commands.push(new WaitCommand(line))
-      }
+      [TodoCommand, WaitCommand].forEach(command => {
+         if (command.stringMatches(line)) {
+          commands.push(new command(line))
+         }
+      })
    }
 
    return commands
