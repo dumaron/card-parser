@@ -1,11 +1,12 @@
 export abstract class Command {
    abstract execute(): void
+
    public cleanLine: string
 
    public tags: ReadonlyArray<string> = []
-   private project: ReadonlyArray<string> = []
+   public project: ReadonlyArray<string> = []
 
-   private handleTags (s: string): string {
+   private handleTags(s: string): string {
       this.tags = s
             .match(/(^|\s)#(\w+)/gi)
             ?.map(s => s.replace(' #', ''))
@@ -14,8 +15,19 @@ export abstract class Command {
       return s.replace(/(^|\s)#(\w+)/gi, '')
    }
 
-   protected constructor (s: string) {
-      this.cleanLine = this.handleTags(s)
+   private handleProject(s: string): string {
+      this.project = s
+            .match(/(^|\s)project:((\w|\.)+)/gi)
+            ?.pop()
+            ?.replace(' project:', '')
+            .toLowerCase()
+            .split('.')
+         ?? []
+      return s.replace(/(^|\s)project:((\w|\.)+)/gi, '')
+   }
+
+   protected constructor(s: string) {
+      this.cleanLine = this.handleTags(this.handleProject(s))
    }
 
 }

@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals'
-import { _parseCommandFile } from '../../main'
-import { TodoCommand } from '../../commands/commands/TodoCommand'
+import { _parseCommandFile } from '../../../main'
+import { TodoCommand } from '../../../commands/commands/TodoCommand'
 
 describe('Tags parsing', () => {
    it('Should recognize the tags', () => {

@@ -11,8 +11,13 @@ export class TodoCommand extends Command {
    }
 
    execute() {
-      const tags = this.tags.map(t => `+${t}`).join(' ')
-      childProcess.execSync(`task add ${this.command} ${tags}`)
+      const tags = this.tags.length > 0
+         ? ' '+ this.tags.map(t => `+${t}`).join(' ')
+         : ''
+      const project = this.project.length > 0
+         ? ` project:${this.project.join('.')}`
+         : ''
+      childProcess.execSync(`task add ${this.command}${project}${tags}`)
    }
 
    static stringMatches(s: string): boolean {

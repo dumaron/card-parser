@@ -1,6 +1,6 @@
 import { describe, expect, jest, it, afterEach } from '@jest/globals'
-import { _parseCommandFile } from '../../main'
-import { WaitCommand } from '../../commands/commands/WaitCommand'
+import { _parseCommandFile } from '../../../main'
+import { WaitCommand } from '../../../commands/commands/WaitCommand'
 
 describe('Parsing wait command lines', () => {
    it('should recognize a wait command', () => {
