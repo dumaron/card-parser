@@ -3,17 +3,22 @@ import { markFileAsParsed } from './card'
 import { TodoCommand } from './commands/commands/TodoCommand'
 import { WaitCommand } from './commands/commands/WaitCommand'
 import { Command } from './commands/Command'
+import { hasErrors, isAlreadyParsed } from './card_file/sanity_checks'
 
 
 const parseCommandFile = (content: string): ReadonlyArray<Command> => {
-   const lines = content.split('\n')
-   const commands: Array<Command> = []
-
-   if (lines.some(line => line.startsWith('@parsed_at'))) {
+   if (isAlreadyParsed(content)) {
       console.log('Already parsed - exiting')
       process.exit(1)
    }
 
+   if (hasErrors(content)) {
+      console.log('Has errors - exiting')
+      process.exit(1)
+   }
+
+   const lines = content.split('\n')
+   const commands: Array<Command> = []
 
    for (const line of lines) {
       [TodoCommand, WaitCommand].forEach(command => {
