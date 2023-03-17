@@ -4,6 +4,8 @@ import { TodoCommand } from '../commands/commands/TodoCommand'
 import { WaitCommand } from '../commands/commands/WaitCommand'
 import { prependFileSync, readFile } from '../utils/fs'
 import { format } from 'date-fns'
+import { EnvironmentContext, pickContexts, ProjectContext } from '../contexts'
+import { Environment } from '../types'
 
 export const parseContent = (content: string): ReadonlyArray<Command> => {
    if (isAlreadyParsed(content)) {
@@ -19,10 +21,24 @@ export const parseContent = (content: string): ReadonlyArray<Command> => {
    const lines = content.split('\n')
    const commands: Array<Command> = []
 
+   let environment: Environment = 'work'
+   let project: string | undefined = undefined
+
    for (const line of lines) {
-      [ TodoCommand, WaitCommand ].forEach(command => {
-         if (command.stringMatches(line)) {
-            commands.push(new command(line))
+      const { contexts, lineWithoutContexts } = pickContexts(line)
+      environment = contexts.find((s): s is EnvironmentContext => s.type === 'environment')?.value ?? environment
+      const projectContext = contexts.find((s): s is ProjectContext => s.type === 'project')?.value
+      const hasReset = contexts.some(s => s.type === 'reset')
+      if (projectContext !== undefined) {
+         project = projectContext
+      } else if (hasReset) {
+         project = undefined
+      }
+
+      const cs = [ TodoCommand, WaitCommand ]
+      cs.forEach(command => {
+         if (command.stringMatches(lineWithoutContexts)) {
+            commands.push(new command(lineWithoutContexts, environment, project))
          }
       })
    }

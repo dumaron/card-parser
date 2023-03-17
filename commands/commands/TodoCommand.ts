@@ -1,12 +1,13 @@
 import childProcess from 'child_process'
 import { Command } from '../Command'
+import { Environment } from '../../types'
 
 
 export class TodoCommand extends Command {
    private readonly command: string
 
-   constructor(s: string) {
-      super(s)
+   constructor(s: string, env: Environment, contextProject?: string) {
+      super(s, env, contextProject)
       this.command = this.cleanLine.replace('+TODO ', '')
    }
 

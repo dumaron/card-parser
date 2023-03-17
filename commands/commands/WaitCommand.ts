@@ -2,12 +2,13 @@ import { format } from 'date-fns'
 import { appendFileSync } from 'fs'
 import { WAITING_FILE_PATH } from '../../constants'
 import { Command } from '../Command'
+import { Environment } from '../../types'
 
 export class WaitCommand extends Command {
    private readonly waitText: string
 
-   constructor(s: string) {
-      super(s)
+   constructor(s: string, env: Environment, contextProject?: string) {
+      super(s, env, contextProject)
       this.waitText = this.cleanLine.replace('+WAIT ', '')
    }
 
