@@ -12,7 +12,7 @@ export const pickContexts = (line: string): {
    lineWithoutContexts: string
 } => {
    const envRegex = /\[(env|environment):(work|personal)]/ig
-   const projectRegex = /\[(project|prj):(\w+)]/ig
+   const projectRegex = /\[(project|prj):((\w|\.|_)+)]/ig
    const contexts: Array<Contexts> = []
 
    const envMatches = [ ...(line.match(envRegex) ?? []) ]
@@ -24,7 +24,6 @@ export const pickContexts = (line: string): {
       const env = firstEnvMatch.replace('[', '').replace(']', '').split(':')[1]
       contexts.push({ type: 'environment', value: env as EnvironmentContext['value'] })
    }
-
    const firstProjectMatch = prjMatches[0]
    if (firstProjectMatch !== undefined) {
       const project = firstProjectMatch.replace('[', '').replace(']', '').split(':')[1]

@@ -170,4 +170,29 @@ bla bla
       expect(todo1.project[0]).toBe('project2')
    })
 
+   it('should recognize projects even when they\'re nested', () => {
+      const content =`
+[project:project1.sub1.sub2]
++TODO command 1`
+      const parsed = parseContent(content)
+      const todo1 = parsed[0] as TodoCommand
+
+      expect(todo1.project).toHaveLength(3)
+      expect(todo1.project[0]).toBe('project1')
+      expect(todo1.project[1]).toBe('sub1')
+      expect(todo1.project[2]).toBe('sub2')
+   })
+
+   it('should recognize projects even when they have underscores', () => {
+      const content =`
+[project:project1.sub_1]
++TODO command 1`
+      const parsed = parseContent(content)
+      const todo1 = parsed[0] as TodoCommand
+
+      expect(todo1.project).toHaveLength(2)
+      expect(todo1.project[0]).toBe('project1')
+      expect(todo1.project[1]).toBe('sub_1')
+   })
+
 })
