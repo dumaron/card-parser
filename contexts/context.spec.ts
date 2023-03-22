@@ -1,6 +1,6 @@
 import { describe, expect, it, jest, afterEach } from '@jest/globals'
-import { TodoCommand } from '../../commands/commands/TodoCommand'
-import { parseContent } from '../../card_files/parsing'
+import { TodoCommand } from '../commands/commands/TodoCommand'
+import { parseContent } from '../card_files/parsing'
 
 
 describe('Parsing todo command lines', () => {
@@ -27,7 +27,7 @@ describe('Parsing todo command lines', () => {
 bla bla
 +TODO this is a command`
       const parsed = parseContent(content)
-      const todo = parsed[0] as TodoCommand
+      const todo = parsed[0]
 
       expect(todo instanceof TodoCommand).toBe(true)
       expect(todo.environment).toBe('personal')
@@ -39,9 +39,9 @@ bla bla
 bla bla
 +TODO this is a command`
       const parsed = parseContent(content)
-      const todo = parsed[0] as TodoCommand
+      const todo = parsed[0]
 
-      expect(todo instanceof TodoCommand).toBe(true)
+      expect(todo instanceof TodoCommand).toBeTruthy()
       expect(todo.environment).toBe('personal')
    })
 
@@ -51,9 +51,9 @@ bla bla
 bla bla
 +TODO this is a command`
       const parsed = parseContent(content)
-      const todo = parsed[0] as TodoCommand
+      const todo = parsed[0]
 
-      expect(todo instanceof TodoCommand).toBe(true)
+      expect(todo instanceof TodoCommand).toBeTruthy()
       expect(todo.environment).toBe('personal')
    })
 
@@ -62,9 +62,9 @@ bla bla
 bla bla
 +TODO this is a command`
       const parsed = parseContent(content)
-      const todo = parsed[0] as TodoCommand
+      const todo = parsed[0]
 
-      expect(todo instanceof TodoCommand).toBe(true)
+      expect(todo instanceof TodoCommand).toBeTruthy()
       expect(todo.environment).toBe('work')
    })
 
@@ -74,9 +74,9 @@ bla bla
 bla bla
 +TODO this is a command`
       const parsed = parseContent(content)
-      const todo = parsed[0] as TodoCommand
+      const todo = parsed[0]
 
-      expect(todo instanceof TodoCommand).toBe(true)
+      expect(todo instanceof TodoCommand).toBeTruthy()
       expect(todo.environment).toBe('personal')
       expect(todo.cleanLine).toBe('+TODO this is a command')
    })
@@ -88,9 +88,9 @@ bla bla
 bla bla
 +TODO this is a command`
       const parsed = parseContent(content)
-      const todo = parsed[0] as TodoCommand
+      const todo = parsed[0]
 
-      expect(todo instanceof TodoCommand).toBe(true)
+      expect(todo instanceof TodoCommand).toBeTruthy()
       expect(todo.project).toHaveLength(1)
       expect(todo.project[0]).toBe('project1')
    })
@@ -103,8 +103,8 @@ bla bla
 +TODO command 2
 `
       const parsed = parseContent(content)
-      const todo1 = parsed[0] as TodoCommand
-      const todo2 = parsed[1] as TodoCommand
+      const todo1 = parsed[0]
+      const todo2 = parsed[1]
 
       expect(todo1.environment).toBe('work')
       expect(todo2.environment).toBe('personal')
@@ -118,8 +118,8 @@ bla bla
 +TODO command 2
 `
       const parsed = parseContent(content)
-      const todo1 = parsed[0] as TodoCommand
-      const todo2 = parsed[1] as TodoCommand
+      const todo1 = parsed[0]
+      const todo2 = parsed[1]
 
       expect(todo1.project).toHaveLength(1)
       expect(todo1.project[0]).toBe('project1')
@@ -135,8 +135,8 @@ bla bla
 +TODO command 2
 `
       const parsed = parseContent(content)
-      const todo1 = parsed[0] as TodoCommand
-      const todo2 = parsed[1] as TodoCommand
+      const todo1 = parsed[0]
+      const todo2 = parsed[1]
 
       expect(todo1.project).toHaveLength(1)
       expect(todo1.project[0]).toBe('project1')
@@ -151,8 +151,8 @@ bla bla
 +TODO command 2
 `
       const parsed = parseContent(content)
-      const todo1 = parsed[0] as TodoCommand
-      const todo2 = parsed[1] as TodoCommand
+      const todo1 = parsed[0]
+      const todo2 = parsed[1]
 
       expect(todo1.environment).toBe('personal')
       expect(todo2.environment).toBe('personal')
@@ -164,7 +164,7 @@ bla bla
 +TODO command 1 project:project2
 `
       const parsed = parseContent(content)
-      const todo1 = parsed[0] as TodoCommand
+      const todo1 = parsed[0]
 
       expect(todo1.project).toHaveLength(1)
       expect(todo1.project[0]).toBe('project2')
@@ -175,7 +175,7 @@ bla bla
 [project:project1.sub1.sub2]
 +TODO command 1`
       const parsed = parseContent(content)
-      const todo1 = parsed[0] as TodoCommand
+      const todo1 = parsed[0]
 
       expect(todo1.project).toHaveLength(3)
       expect(todo1.project[0]).toBe('project1')
@@ -188,7 +188,7 @@ bla bla
 [project:project1.sub_1]
 +TODO command 1`
       const parsed = parseContent(content)
-      const todo1 = parsed[0] as TodoCommand
+      const todo1 = parsed[0]
 
       expect(todo1.project).toHaveLength(2)
       expect(todo1.project[0]).toBe('project1')

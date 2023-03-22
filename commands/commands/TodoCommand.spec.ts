@@ -1,7 +1,7 @@
 import { describe, expect, it, jest, afterEach } from '@jest/globals'
-import { TodoCommand } from '../../../commands/commands/TodoCommand'
+import { TodoCommand } from './TodoCommand'
 import * as child_process from 'child_process'
-import { parseContent } from '../../../card_files/parsing'
+import { parseContent } from '../../card_files/parsing'
 
 jest.mock('child_process')
 

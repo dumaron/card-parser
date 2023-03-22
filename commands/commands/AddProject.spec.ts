@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals'
-import { parseContent } from '../../../card_files/parsing'
-import { AddProjectCommand } from '../../../commands/commands/AddProjectCommand'
+import { parseContent } from '../../card_files/parsing'
+import { AddProjectCommand } from './AddProjectCommand'
 
 describe('Parsing "add project" command', () => {
    it('should recognize a "add project" command', () => {

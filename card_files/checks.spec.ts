@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, jest } from '@jest/globals'
-import { getErrorsFromContent } from '../../card_files/checks'
+import { getErrorsFromContent } from './checks'
 
 describe('Checks', () => {
    afterEach(() => {

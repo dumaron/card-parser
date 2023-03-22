@@ -4,7 +4,7 @@ import { TodoCommand } from '../commands/commands/TodoCommand'
 import { WaitCommand } from '../commands/commands/WaitCommand'
 import { prependFileSync, readFile } from '../utils/fs'
 import { format } from 'date-fns'
-import { EnvironmentContext, pickContexts, ProjectContext } from '../contexts'
+import { EnvironmentContext, pickContexts, ProjectContext } from '../contexts/context'
 import { Environment } from '../types'
 import { AddProjectCommand } from '../commands/commands/AddProjectCommand'
 
