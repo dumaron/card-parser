@@ -1,4 +1,4 @@
-import { Environment } from '../types'
+import { Environment, SerializedProject } from '../types'
 
 export abstract class Command {
    abstract execute(): void
@@ -17,7 +17,7 @@ export abstract class Command {
       return s.replace(/(^|\s)#(\w+)/gi, '')
    }
 
-   private handleProject(s: string, contextProject?: string): string {
+   private handleProject(s: string, contextProject?: SerializedProject): string {
       this.project = s
          .match(/(^|\s)project:((\w|\.)+)/gi)
          ?.pop()

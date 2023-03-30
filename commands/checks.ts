@@ -2,22 +2,27 @@ import { Command } from './Command'
 import { readFile } from '../utils/fs'
 import { ACTIVE_PROJECTS_FILE_PATH } from '../constants'
 import { serializeProject } from '../utils/projects'
-import { Project } from '../types'
+import { Project, SerializedProject } from '../types'
+import { AddProjectCommand } from './commands/AddProjectCommand'
 
 const activeProjects = JSON.parse(readFile(ACTIVE_PROJECTS_FILE_PATH)) as ReadonlyArray<Project>
 
 export const getUnknownProjects = (
    activeProjects: ReadonlyArray<Project>,
    commands: ReadonlyArray<Command>,
-): ReadonlyArray<string> => {
-   const serializedActiveProjects = activeProjects.map(serializeProject)
-   const serializedProjectsFromCommands = commands
-      .map(c => c.project)
-      .filter((p): p is ReadonlyArray<string> => p !== undefined)
+): ReadonlyArray<SerializedProject> => {
+   const newProjects = commands
+      .filter((c: Command): c is AddProjectCommand => c instanceof AddProjectCommand)
+      .map(c => c.projectFromString)
+   const validProjects = activeProjects
+      .concat(newProjects)
       .map(serializeProject)
 
-   return serializedProjectsFromCommands
-      .filter(p => !serializedActiveProjects.includes(p))
+   return commands
+      .map(c => c.project)
+      .filter(p => p.length > 0)
+      .map(serializeProject)
+      .filter(p => !validProjects.includes(p))
 }
 
 export const getErrorsFromCommands = (commands: ReadonlyArray<Command>): ReadonlyArray<Error> => {
