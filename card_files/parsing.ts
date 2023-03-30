@@ -1,5 +1,5 @@
 import { Command } from '../commands/Command'
-import { getErrorsFromCommands, getErrorsFromContent } from './checks'
+import { getErrorsFromContent } from './checks'
 import { TodoCommand } from '../commands/commands/TodoCommand'
 import { WaitCommand } from '../commands/commands/WaitCommand'
 import { prependFileSync, readFile } from '../utils/fs'
@@ -7,6 +7,7 @@ import { format } from 'date-fns'
 import { EnvironmentContext, pickContexts, ProjectContext } from '../contexts/context'
 import { Environment } from '../types'
 import { AddProjectCommand } from '../commands/commands/AddProjectCommand'
+import { getErrorsFromCommands } from '../commands/checks'
 
 
 export const parseContent = (content: string): ReadonlyArray<Command> => {
