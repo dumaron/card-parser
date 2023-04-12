@@ -17,7 +17,7 @@ export class AddProjectCommand extends Command {
 
    execute() {
       const projects = JSON.parse(readFile(ACTIVE_PROJECTS_FILE_PATH)) as ReadonlyArray<ReadonlyArray<string>>
-      const newProjects = projects.concat(this.projectFromString)
+      const newProjects = projects.concat([this.projectFromString])
       writeFileSync(ACTIVE_PROJECTS_FILE_PATH, JSON.stringify(newProjects, null, 2))
    }
 

@@ -14,6 +14,7 @@ export const getUnknownProjects = (
    const newProjects = commands
       .filter((c: Command): c is AddProjectCommand => c instanceof AddProjectCommand)
       .map(c => c.projectFromString)
+
    const validProjects = activeProjects
       .concat(newProjects)
       .map(serializeProject)
