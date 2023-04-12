@@ -13,8 +13,8 @@ describe('Commands checks', () => {
    describe('Unknown projects', () => {
       it('Should not return any project if all projects used are among the active ones', () => {
          const activeProjects = [
-            ['work'],
-            ['work', 'something']
+            'work',
+            'work.something',
          ]
 
          const commands = [
@@ -29,8 +29,8 @@ describe('Commands checks', () => {
 
       it('Should return serialized projects if some commands contains projects that are not among the active ones', () => {
          const activeProjects = [
-            ['work'],
-            ['work', 'something']
+            'work',
+            'work.something',
          ]
 
          const commands = [

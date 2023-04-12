@@ -11,7 +11,7 @@ describe('Command common traits', () => {
 
          expect(commands).toHaveLength(1)
          expect(commands[0] instanceof TodoCommand).toBeTruthy()
-         expect(commands[0].project).toEqual([ 'test' ])
+         expect(commands[0].project).toEqual('test')
          expect(commands[0].cleanLine).not.toContain('test')
          expect(commands[0].cleanLine).not.toContain('project')
       })
@@ -20,7 +20,7 @@ describe('Command common traits', () => {
          const command = '+TODO whatever project:parent.child'
          const commands = parseContent(command)
 
-         expect(commands[0].project).toEqual([ 'parent', 'child' ])
+         expect(commands[0].project).toEqual('parent.child')
       })
    })
 

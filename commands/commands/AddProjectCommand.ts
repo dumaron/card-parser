@@ -5,18 +5,17 @@ import { Environment } from '../../types'
 import { readFile } from '../../utils/fs'
 
 export class AddProjectCommand extends Command {
-   public readonly projectFromString: ReadonlyArray<string>
+   public readonly projectFromString: string
 
    constructor(s: string, env: Environment, contextProject?: string) {
       super(s, env, contextProject)
       this.projectFromString = this.cleanLine
          .replace('+PRJ ', '')
          .trim()
-         .split('.')
    }
 
    execute() {
-      const projects = JSON.parse(readFile(ACTIVE_PROJECTS_FILE_PATH)) as ReadonlyArray<ReadonlyArray<string>>
+      const projects = JSON.parse(readFile(ACTIVE_PROJECTS_FILE_PATH)) as ReadonlyArray<string>
       const newProjects = projects.concat([this.projectFromString])
       writeFileSync(ACTIVE_PROJECTS_FILE_PATH, JSON.stringify(newProjects, null, 2))
    }

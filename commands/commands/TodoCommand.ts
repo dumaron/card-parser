@@ -15,8 +15,8 @@ export class TodoCommand extends Command {
       const tags = this.tags.length > 0
          ? ' '+ this.tags.map(t => `+${t}`).join(' ')
          : ''
-      const project = this.project.length > 0
-         ? ` project:${this.project.join('.')}`
+      const project = this.project !== null
+         ? ` project:${this.project}`
          : ''
       childProcess.execSync(`task add ${this.command}${project}${tags}`)
    }

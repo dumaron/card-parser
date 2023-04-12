@@ -50,10 +50,7 @@ Even with titles and blank lines!!
 
       expect(commands).toHaveLength(1)
       expect(commands[0] instanceof AddProjectCommand).toBeTruthy()
-      expect((commands[0] as AddProjectCommand).projectFromString).toHaveLength(3)
-      expect((commands[0] as AddProjectCommand).projectFromString[0]).toBe('level1')
-      expect((commands[0] as AddProjectCommand).projectFromString[1]).toBe('level2')
-      expect((commands[0] as AddProjectCommand).projectFromString[2]).toBe('level3')
+      expect((commands[0] as AddProjectCommand).projectFromString).toBe('level1.level2.level3')
    })
 
    it('should parse serialized.projectFromString name with underscores', () => {
@@ -62,9 +59,7 @@ Even with titles and blank lines!!
 
       expect(commands).toHaveLength(1)
       expect(commands[0] instanceof AddProjectCommand).toBeTruthy()
-      expect((commands[0] as AddProjectCommand).projectFromString).toHaveLength(2)
-      expect((commands[0] as AddProjectCommand).projectFromString[0]).toBe('level1')
-      expect((commands[0] as AddProjectCommand).projectFromString[1]).toBe('level_2')
+      expect((commands[0] as AddProjectCommand).projectFromString).toBe('level1.level_2')
    })
 
    it('should add a project to the list of active projects', () => {
@@ -72,7 +67,7 @@ Even with titles and blank lines!!
       const write = jest.spyOn(fs, 'writeFileSync').mockReturnValueOnce(undefined)
       const command = new AddProjectCommand('level1.level2.level3', 'work')
       command.execute()
-      const expected = [['level1', 'level2', 'level3']]
+      const expected = ['level1.level2.level3']
 
       expect(write).toHaveBeenCalledWith(ACTIVE_PROJECTS_FILE_PATH, JSON.stringify(expected, null, 2))
    })

@@ -28,7 +28,7 @@ describe('Card files generation', () => {
 
          generateCardFile()
 
-         expect(fs.writeFileSync).toHaveBeenCalledWith(CARD_FILE_FOLDER + `card_${alreadyPresentCards + 1}.md`, '')
+         expect(fs.writeFileSync).toHaveBeenCalledWith(CARD_FILE_FOLDER + `card_${alreadyPresentCards + 1}.md`, 'Good morning, my dear.')
      })
    })
 })

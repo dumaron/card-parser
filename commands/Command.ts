@@ -1,11 +1,11 @@
-import { Environment, SerializedProject } from '../types'
+import { Environment } from '../types'
 
 export abstract class Command {
    abstract execute(): void
 
    public cleanLine: string
    public tags: ReadonlyArray<string> = []
-   public project: ReadonlyArray<string> = []
+   public project: string | null = null
    public environment: Environment
 
    private handleTags(s: string): string {
@@ -17,14 +17,13 @@ export abstract class Command {
       return s.replace(/(^|\s)#(\w+)/gi, '')
    }
 
-   private handleProject(s: string, contextProject?: SerializedProject): string {
+   private handleProject(s: string, contextProject?: string): string {
       this.project = s
          .match(/(^|\s)project:((\w|\.)+)/gi)
          ?.pop()
          ?.replace(' project:', '')
          .toLowerCase()
-         .split('.')
-      ?? (contextProject !== undefined ? contextProject.split('.') : [])
+      ?? (contextProject !== undefined ? contextProject : null)
       return s.replace(/(^|\s)project:((\w|\.)+)/gi, '')
    }
 

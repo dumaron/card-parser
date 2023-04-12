@@ -91,8 +91,7 @@ bla bla
       const todo = parsed[0]
 
       expect(todo instanceof TodoCommand).toBeTruthy()
-      expect(todo.project).toHaveLength(1)
-      expect(todo.project[0]).toBe('project1')
+      expect(todo.project).toBe('project1')
    })
 
    it('should override envs in different lines', () => {
@@ -121,10 +120,8 @@ bla bla
       const todo1 = parsed[0]
       const todo2 = parsed[1]
 
-      expect(todo1.project).toHaveLength(1)
-      expect(todo1.project[0]).toBe('project1')
-      expect(todo2.project).toHaveLength(1)
-      expect(todo2.project[0]).toBe('project2')
+      expect(todo1.project).toBe('project1')
+      expect(todo2.project).toBe('project2')
    })
 
    it('should reset the project when encounters a markdown title', () => {
@@ -138,9 +135,8 @@ bla bla
       const todo1 = parsed[0]
       const todo2 = parsed[1]
 
-      expect(todo1.project).toHaveLength(1)
-      expect(todo1.project[0]).toBe('project1')
-      expect(todo2.project).toHaveLength(0)
+      expect(todo1.project).toBe('project1')
+      expect(todo2.project).toBe(null)
    })
 
    it('should not reset the environment when encounters a markdown title', () => {
@@ -166,8 +162,7 @@ bla bla
       const parsed = parseContent(content)
       const todo1 = parsed[0]
 
-      expect(todo1.project).toHaveLength(1)
-      expect(todo1.project[0]).toBe('project2')
+      expect(todo1.project).toBe('project2')
    })
 
    it('should recognize projects even when they\'re nested', () => {
@@ -177,10 +172,7 @@ bla bla
       const parsed = parseContent(content)
       const todo1 = parsed[0]
 
-      expect(todo1.project).toHaveLength(3)
-      expect(todo1.project[0]).toBe('project1')
-      expect(todo1.project[1]).toBe('sub1')
-      expect(todo1.project[2]).toBe('sub2')
+      expect(todo1.project).toBe('project1.sub1.sub2')
    })
 
    it('should recognize projects even when they have underscores', () => {
@@ -190,9 +182,7 @@ bla bla
       const parsed = parseContent(content)
       const todo1 = parsed[0]
 
-      expect(todo1.project).toHaveLength(2)
-      expect(todo1.project[0]).toBe('project1')
-      expect(todo1.project[1]).toBe('sub_1')
+      expect(todo1.project).toBe('project1.sub_1')
    })
 
 })
